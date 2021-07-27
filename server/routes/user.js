@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import db_connection from "../services/database.js";
+import jwt from "jsonwebtoken";
 
 //verify user login and password
 router.post("/login", (req, res) => {
@@ -13,9 +14,19 @@ router.post("/login", (req, res) => {
             }
         );
     }).then((result) => {
-        if (result.length > 0) res.send("Logged in");
-        else res.send("Incorrect login or password");
-        //TODO: Add JWT Token to auth process
+        if (result.length > 0) {
+            new Promise((resolve, reject) => {
+                jwt.sign(
+                    { login: result[0].login },
+                    process.env.JWT_SECRET,
+                    (err, token) => {
+                        resolve(token);
+                    }
+                );
+            }).then((result) => {
+                res.send(result);
+            });
+        } else res.send("Incorrect login or password");
     });
 });
 
