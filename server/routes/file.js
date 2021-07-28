@@ -1,9 +1,11 @@
 import express from "express";
+import jwt from "jsonwebtoken";
 const router = express.Router();
+import authJWT from "../services/authentication.js";
 
 //get user's file list
-router.get("/files", (req, res) => {
-    res.send("files");
+router.get("/", authJWT, (req, res) => {
+    if (req.user) res.send("User authenticated");
 });
 
 //upload file to user's folder

@@ -15,17 +15,11 @@ router.post("/login", (req, res) => {
         );
     }).then((result) => {
         if (result.length > 0) {
-            new Promise((resolve, reject) => {
-                jwt.sign(
-                    { login: result[0].login },
-                    process.env.JWT_SECRET,
-                    (err, token) => {
-                        resolve(token);
-                    }
-                );
-            }).then((result) => {
-                res.send(result);
-            });
+            const token = jwt.sign(
+                { login: result[0].login },
+                process.env.JWT_SECRET
+            );
+            res.send(token);
         } else res.send("Incorrect login or password");
     });
 });
