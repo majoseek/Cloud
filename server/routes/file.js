@@ -1,11 +1,14 @@
 import express from "express";
-import jwt from "jsonwebtoken";
 const router = express.Router();
 import authJWT from "../services/authentication.js";
+import dirTree from "directory-tree";
 
 //get user's file list
 router.get("/", authJWT, (req, res) => {
-    if (req.user) res.send("User authenticated");
+    if (req.user) {
+        const tree = dirTree("./users_dirs/123/");
+        res.send(tree);
+    }
 });
 
 //upload file to user's folder
