@@ -11,6 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { useHistory, withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -32,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Login() {
+function Login() {
+    const history = useHistory();
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const classes = useStyles();
@@ -40,14 +42,16 @@ export default function Login() {
         axios
             .post("/user/login", { login: login, password: password })
             .then((response) => {
-                console.log(response.data);
+                localStorage.setItem("token", response.data);
             })
             .catch((err) => {
                 console.log("Wrong login or password");
+            })
+            .then(() => {
+                history.push("/");
             });
         e.preventDefault();
     };
-
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -70,6 +74,7 @@ export default function Login() {
                         value={login}
                         onChange={(e) => setLogin(e.target.value)}
                         autoFocus
+                        autoComplete="off"
                     />
                     <TextField
                         variant="outlined"
@@ -82,7 +87,7 @@ export default function Login() {
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="current-password"
+                        autoComplete="off"
                     />
                     <Button
                         type="submit"
@@ -100,14 +105,10 @@ export default function Login() {
                                 Forgot password?
                             </Link>
                         </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
                     </Grid>
                 </form>
             </div>
         </Container>
     );
 }
+export default withRouter(Login);
