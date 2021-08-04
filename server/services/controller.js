@@ -1,6 +1,6 @@
 import db_connection from "../services/database.js";
 import jwt from "jsonwebtoken";
-const user_login = (login, password) => {
+export const user_login = (login, password) => {
     return new Promise((resolve, reject) => {
         const query = `SELECT * FROM users WHERE login="${login}" AND password="${password}"`;
         db_connection.query(query, (err, result) => {
@@ -15,4 +15,11 @@ const user_login = (login, password) => {
         });
     });
 };
-export default user_login;
+export const get_user = (token) => {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err) reject("Authentication error");
+            resolve(user);
+        });
+    });
+};
