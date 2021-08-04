@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useHistory, withRouter } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,14 +36,18 @@ const useStyles = makeStyles((theme) => ({
 
 function Login() {
     const history = useHistory();
+    const [cookies, setCookie] = useCookies(["token"]);
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const classes = useStyles();
+    useEffect(() => {
+        if (cookies.token) history.push("/");
+    }, [cookies, history]);
     const send_data = (e) => {
         axios
             .post("/user/login", { login: login, password: password })
             .then((response) => {
-                localStorage.setItem("token", response.data);
+                setCookie("token", response.data);
             })
             .catch((err) => {
                 console.log("Wrong login or password");
