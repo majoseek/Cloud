@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { useHistory, withRouter } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import React from "react";
+import FileHolder from "../FileHolder/FileHolder";
+import ResponsiveDrawer from "../ResponsiveDrawer/ResponsiveDrawer";
+
 function Home() {
     const history = useHistory();
     const [cookies, setCookie] = useCookies(["token"]);
@@ -21,6 +25,10 @@ function Home() {
                 });
         }
     }, [history, cookies]);
-    return <h1>Welcome back {user}!</h1>;
+    return (
+        <React.Fragment>
+            <ResponsiveDrawer />
+        </React.Fragment>
+    );
 }
 export default withRouter(Home);
