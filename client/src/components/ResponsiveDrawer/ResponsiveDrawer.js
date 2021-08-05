@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
@@ -17,7 +16,9 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PublishIcon from "@material-ui/icons/Publish";
+import FileHolder from "../FileHolder/FileHolder";
 import AddIcon from "@material-ui/icons/Add";
+import { Grid } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -43,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
-    // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
         width: drawerWidth,
@@ -51,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
+    },
+    titles: {
+        fontSize: "14px",
+        fontWeight: "bold",
     },
 }));
 
@@ -153,7 +157,44 @@ function ResponsiveDrawer(props) {
             </nav>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <h1>Welcome back USER!</h1>
+                <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        style={{ marginBottom: "10px" }}
+                    >
+                        <Grid item xs={6}>
+                            <h2>Your files</h2>
+                        </Grid>
+                    </Grid>
+
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
+                    >
+                        <Grid item xs={3} style={{ marginLeft: "12%" }}>
+                            <Typography className={classes.titles}>
+                                Name
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography className={classes.titles}>
+                                Modified
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    <FileHolder />
+                    <FileHolder />
+                    <FileHolder />
+                </Grid>
             </main>
         </div>
     );

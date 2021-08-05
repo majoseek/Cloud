@@ -3,7 +3,6 @@ import { useHistory, withRouter } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import React from "react";
-import FileHolder from "../FileHolder/FileHolder";
 import ResponsiveDrawer from "../ResponsiveDrawer/ResponsiveDrawer";
 
 function Home() {

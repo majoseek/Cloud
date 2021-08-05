@@ -1,32 +1,29 @@
-import { Grid } from "@material-ui/core";
-import { Paper } from "@material-ui/core";
+import { Divider, Grid } from "@material-ui/core";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import React from "react";
+import PhotoIcon from "@material-ui/icons/Photo";
 export default function FileHolder() {
     return (
-        <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="stretch"
-        >
-            <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="stretch"
-            >
-                <Grid item xs={1}>
-                    <Paper>FOTO</Paper>
+        <React.Fragment>
+            <Grid container direction="row" style={{ paddingTop: "35px" }}>
+                <Grid item xs={1} style={{ marginLeft: "10px" }}>
+                    <PhotoIcon />
                 </Grid>
-                <Grid item xs={6}>
-                    <Paper>NAZWA</Paper>
-                </Grid>
-                <Grid item xs={1}>
-                    <Paper>MODIFIED</Paper>
+                <Grid item xs={4}>
+                    Name
                 </Grid>
                 <Grid item xs={3}>
-                    <Paper>PRZYCISK</Paper>
+                    Modified
+                </Grid>
+                <Grid item xs={1}>
+                    <MoreVertIcon />
                 </Grid>
             </Grid>
-        </Grid>
+            <Grid container direction="row">
+                <Grid item xs={9}>
+                    <Divider />
+                </Grid>
+            </Grid>
+        </React.Fragment>
     );
 }
