@@ -1,11 +1,12 @@
-import { Divider, Grid } from "@material-ui/core";
+import { Button, Divider, Grid } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import React from "react";
 import PhotoIcon from "@material-ui/icons/Photo";
+import "./FileHolder.css";
 export default function FileHolder() {
     return (
         <React.Fragment>
-            <Grid container direction="row" style={{ paddingTop: "35px" }}>
+            <Grid container direction="row" className="FileHolder">
                 <Grid item xs={1} style={{ marginLeft: "10px" }}>
                     <PhotoIcon />
                 </Grid>
@@ -16,11 +17,13 @@ export default function FileHolder() {
                     Modified
                 </Grid>
                 <Grid item xs={1}>
-                    <MoreVertIcon />
+                    <Button>
+                        <MoreVertIcon />
+                    </Button>
                 </Grid>
             </Grid>
             <Grid container direction="row">
-                <Grid item xs={9}>
+                <Grid item xs={12}>
                     <Divider />
                 </Grid>
             </Grid>

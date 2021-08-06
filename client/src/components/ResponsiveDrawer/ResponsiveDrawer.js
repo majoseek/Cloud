@@ -19,6 +19,7 @@ import PublishIcon from "@material-ui/icons/Publish";
 import FileHolder from "../FileHolder/FileHolder";
 import AddIcon from "@material-ui/icons/Add";
 import { Grid } from "@material-ui/core";
+import FolderHolder from "../FolderHolder/FolderHolder";
 
 const drawerWidth = 240;
 
@@ -157,6 +158,28 @@ function ResponsiveDrawer(props) {
             </nav>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
+                <Grid
+                    container
+                    spacing={4}
+                    style={{ marginBottom: "20px", marginTop: "20px" }}
+                >
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        style={{ marginBottom: "10px" }}
+                    >
+                        <Grid item xs={6}>
+                            <h2>Home folders</h2>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                        <FolderHolder />
+                    </Grid>
+                    <Grid item>
+                        <FolderHolder />
+                    </Grid>
+                </Grid>
                 <Grid
                     container
                     direction="column"
