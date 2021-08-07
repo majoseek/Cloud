@@ -7,7 +7,7 @@ import ResponsiveDrawer from "../ResponsiveDrawer/ResponsiveDrawer";
 
 function Home() {
     const history = useHistory();
-    const [cookies, setCookie] = useCookies(["token"]);
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const [folder, setFolder] = useState([]);
     const [folderName, setFolderName] = useState("Home");
 
@@ -28,6 +28,13 @@ function Home() {
                 });
         }
     }, [history, cookies]);
+    const logout = () => {
+        removeCookie("token");
+        history.push("/login");
+    };
+    const navigate_home = () => {
+        history.push("/login");
+    };
     return (
         <React.Fragment>
             <ResponsiveDrawer
@@ -35,6 +42,8 @@ function Home() {
                 setCurrentFolder={setFolder}
                 folderName={folderName}
                 setFolderName={setFolderName}
+                logout={logout}
+                home={navigate_home}
             />
         </React.Fragment>
     );

@@ -67,18 +67,17 @@ function ResponsiveDrawer(props) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
     const drawer = (
         <div>
             <div className={classes.toolbar} />
             <List>
-                <ListItem button key={"Home"}>
+                <ListItem button key={"Home"} onClick={props.home}>
                     <ListItemIcon>
                         <AccountCircleIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                 </ListItem>
-                <ListItem button key={"Logout"}>
+                <ListItem button key={"Logout"} onClick={props.logout}>
                     <ListItemIcon>
                         <ExitToAppIcon />
                     </ListItemIcon>
