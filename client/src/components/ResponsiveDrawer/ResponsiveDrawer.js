@@ -92,7 +92,11 @@ function ResponsiveDrawer(props) {
                     </ListItemIcon>
                     <ListItemText primary={"Upload file"} />
                 </ListItem>
-                <ListItem button key={"Createfolder"}>
+                <ListItem
+                    button
+                    key={"Createfolder"}
+                    onClick={props.createFolder}
+                >
                     <ListItemIcon>
                         <AddIcon />
                     </ListItemIcon>
@@ -187,6 +191,7 @@ function ResponsiveDrawer(props) {
                                             folder={f}
                                             setFolder={props.setCurrentFolder}
                                             setFolderName={props.setFolderName}
+                                            setFolderPath={props.setFolderPath}
                                         />
                                     </Grid>
                                 );

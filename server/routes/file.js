@@ -3,6 +3,7 @@ const router = express.Router();
 import authJWT from "../services/authentication.js";
 import dirTree from "directory-tree";
 import path from "path";
+import fs from "fs";
 
 const __dirname = path.resolve();
 
@@ -18,6 +19,18 @@ router.get("/", authJWT, (req, res) => {
 router.post("/upload", (req, res) => {
     const file_path = req.body.path;
     res.send("upload");
+});
+
+router.post("/folder", authJWT, (req, res) => {
+    if (req.user) {
+        const folder_path = req.body.path;
+        const folder_name = req.body.name;
+        const dir = folder_path + "/" + folder_name;
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        res.status(200).send("Folder created successfully");
+    }
 });
 
 //download given file

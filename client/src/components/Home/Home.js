@@ -10,6 +10,7 @@ function Home() {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const [folder, setFolder] = useState([]);
     const [folderName, setFolderName] = useState("Home");
+    const [folderPath, setFolderPath] = useState("");
 
     useEffect(() => {
         if (!cookies.token) history.push("/login");
@@ -35,6 +36,9 @@ function Home() {
     const navigate_home = () => {
         history.push("/login");
     };
+    const create_folder = () => {
+        //axios.post("/file/folder",{path:folderPath})
+    };
     return (
         <React.Fragment>
             <ResponsiveDrawer
@@ -44,6 +48,8 @@ function Home() {
                 setFolderName={setFolderName}
                 logout={logout}
                 home={navigate_home}
+                createFolder={create_folder}
+                setFolderPath={setFolderPath}
             />
         </React.Fragment>
     );

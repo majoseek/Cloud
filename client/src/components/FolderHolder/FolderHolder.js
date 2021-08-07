@@ -11,6 +11,7 @@ export default function FolderHolder(props) {
                 onClick={() => {
                     props.setFolder(props.folder["children"]);
                     props.setFolderName(props.folder["name"]);
+                    props.setFolderPath(props.folder["path"]);
                 }}
             >
                 <Box
