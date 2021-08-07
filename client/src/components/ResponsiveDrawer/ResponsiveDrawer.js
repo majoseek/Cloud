@@ -20,7 +20,6 @@ import FileHolder from "../FileHolder/FileHolder";
 import AddIcon from "@material-ui/icons/Add";
 import { Grid } from "@material-ui/core";
 import FolderHolder from "../FolderHolder/FolderHolder";
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -173,12 +172,18 @@ function ResponsiveDrawer(props) {
                             <h2>Home folders</h2>
                         </Grid>
                     </Grid>
-                    <Grid item>
-                        <FolderHolder />
-                    </Grid>
-                    <Grid item>
-                        <FolderHolder />
-                    </Grid>
+                    {props.currentFolder
+                        .filter((elem) => elem.type === "directory")
+                        .map((f) => {
+                            return (
+                                <Grid item key={`${f.name}grid`}>
+                                    <FolderHolder
+                                        key={`${f.name}holder`}
+                                        folder={f}
+                                    />
+                                </Grid>
+                            );
+                        })}
                 </Grid>
                 <Grid
                     container

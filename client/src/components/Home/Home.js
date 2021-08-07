@@ -8,25 +8,28 @@ import ResponsiveDrawer from "../ResponsiveDrawer/ResponsiveDrawer";
 function Home() {
     const history = useHistory();
     const [cookies, setCookie] = useCookies(["token"]);
-    const [user, setUser] = useState("");
+    const [folder, setFolder] = useState([]);
 
     useEffect(() => {
         if (!cookies.token) history.push("/login");
         else {
             axios
-                .post("/user", { token: cookies.token })
+                .get("/file", {
+                    headers: {
+                        Authorization: `Bearer ${cookies.token}`,
+                    },
+                })
                 .then((result) => {
-                    setUser(result.data.login);
+                    setFolder(result.data["children"]);
                 })
                 .catch((err) => {
-                    console.log("Authentication error");
                     history.push("/login");
                 });
         }
     }, [history, cookies]);
     return (
         <React.Fragment>
-            <ResponsiveDrawer />
+            <ResponsiveDrawer currentFolder={folder} />
         </React.Fragment>
     );
 }

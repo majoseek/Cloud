@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Divider } from "@material-ui/core";
 import "./FolderHolder.css";
-export default function FolderHolder() {
+export default function FolderHolder(props) {
     return (
         <React.Fragment>
             <Button
@@ -27,7 +27,7 @@ export default function FolderHolder() {
                         className="Media"
                     />
                     <Divider />
-                    <label>Podfolder</label>
+                    <label>{props.folder.name}</label>
                 </Box>
             </Button>
         </React.Fragment>
