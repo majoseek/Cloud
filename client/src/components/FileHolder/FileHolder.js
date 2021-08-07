@@ -5,7 +5,7 @@ import PhotoIcon from "@material-ui/icons/Photo";
 import { useState } from "react";
 import { Fade } from "@material-ui/core";
 import "./FileHolder.css";
-export default function FileHolder() {
+export default function FileHolder(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -18,10 +18,7 @@ export default function FileHolder() {
                     <PhotoIcon />
                 </Grid>
                 <Grid item xs={4}>
-                    Name
-                </Grid>
-                <Grid item xs={3}>
-                    Modified
+                    {props.file.name}
                 </Grid>
                 <Grid item xs={1}>
                     <Button onClick={handleClick} aria-describedby={"popper"}>

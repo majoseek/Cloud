@@ -160,7 +160,10 @@ function ResponsiveDrawer(props) {
                 <Grid
                     container
                     spacing={4}
-                    style={{ marginBottom: "20px", marginTop: "20px" }}
+                    style={{
+                        marginBottom: "20px",
+                        marginTop: "40px",
+                    }}
                 >
                     <Grid
                         container
@@ -169,59 +172,64 @@ function ResponsiveDrawer(props) {
                         style={{ marginBottom: "10px" }}
                     >
                         <Grid item xs={6}>
-                            <h2>Home folders</h2>
+                            <h2>{props.folderName} folders</h2>
                         </Grid>
                     </Grid>
-                    {props.currentFolder
-                        .filter((elem) => elem.type === "directory")
-                        .map((f) => {
-                            return (
-                                <Grid item key={`${f.name}grid`}>
-                                    <FolderHolder
-                                        key={`${f.name}holder`}
-                                        folder={f}
-                                    />
-                                </Grid>
-                            );
-                        })}
+                    {props.currentFolder.filter(
+                        (elem) => elem.type === "directory"
+                    ).length > 0 ? (
+                        props.currentFolder
+                            .filter((elem) => elem.type === "directory")
+                            .map((f) => {
+                                return (
+                                    <Grid item key={`${f.name}grid`}>
+                                        <FolderHolder
+                                            key={`${f.name}holder`}
+                                            folder={f}
+                                            setFolder={props.setCurrentFolder}
+                                            setFolderName={props.setFolderName}
+                                        />
+                                    </Grid>
+                                );
+                            })
+                    ) : (
+                        <Typography className={classes.titles}>
+                            You have not any folders here yet
+                        </Typography>
+                    )}
                 </Grid>
-                <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                >
+                <Grid container direction="column">
                     <Grid
                         container
                         direction="row"
                         justifyContent="center"
-                        style={{ marginBottom: "10px" }}
+                        style={{
+                            marginBottom: "10px",
+                            marginTop: "50px",
+                        }}
                     >
                         <Grid item xs={6}>
                             <h2>Your files</h2>
                         </Grid>
                     </Grid>
 
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="flex-start"
-                        alignItems="center"
-                    >
-                        <Grid item xs={3} style={{ marginLeft: "12%" }}>
-                            <Typography className={classes.titles}>
-                                Name
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Typography className={classes.titles}>
-                                Modified
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <FileHolder />
-                    <FileHolder />
-                    <FileHolder />
+                    {props.currentFolder.filter((elem) => elem.type === "file")
+                        .length > 0 ? (
+                        props.currentFolder
+                            .filter((elem) => elem.type === "file")
+                            .map((f) => {
+                                return (
+                                    <FileHolder
+                                        key={`${f.name}holder`}
+                                        file={f}
+                                    />
+                                );
+                            })
+                    ) : (
+                        <Typography className={classes.titles}>
+                            You have not any files here yet
+                        </Typography>
+                    )}
                 </Grid>
             </main>
         </div>

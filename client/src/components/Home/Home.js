@@ -9,6 +9,7 @@ function Home() {
     const history = useHistory();
     const [cookies, setCookie] = useCookies(["token"]);
     const [folder, setFolder] = useState([]);
+    const [folderName, setFolderName] = useState("Home");
 
     useEffect(() => {
         if (!cookies.token) history.push("/login");
@@ -29,7 +30,12 @@ function Home() {
     }, [history, cookies]);
     return (
         <React.Fragment>
-            <ResponsiveDrawer currentFolder={folder} />
+            <ResponsiveDrawer
+                currentFolder={folder}
+                setCurrentFolder={setFolder}
+                folderName={folderName}
+                setFolderName={setFolderName}
+            />
         </React.Fragment>
     );
 }

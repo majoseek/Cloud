@@ -8,6 +8,10 @@ export default function FolderHolder(props) {
                 style={{
                     borderRadius: "10%",
                 }}
+                onClick={() => {
+                    props.setFolder(props.folder["children"]);
+                    props.setFolderName(props.folder["name"]);
+                }}
             >
                 <Box
                     p={2}
