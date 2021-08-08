@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
@@ -18,7 +18,16 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PublishIcon from "@material-ui/icons/Publish";
 import FileHolder from "../FileHolder/FileHolder";
 import AddIcon from "@material-ui/icons/Add";
-import { Grid } from "@material-ui/core";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Grid,
+    TextField,
+} from "@material-ui/core";
 import FolderHolder from "../FolderHolder/FolderHolder";
 const drawerWidth = 240;
 
@@ -62,7 +71,9 @@ function ResponsiveDrawer(props) {
     const { window } = props;
     const classes = useStyles();
     const theme = useTheme();
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [textFieldValue, setTextFieldValue] = useState("");
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -92,15 +103,59 @@ function ResponsiveDrawer(props) {
                     </ListItemIcon>
                     <ListItemText primary={"Upload file"} />
                 </ListItem>
-                <ListItem
-                    button
-                    key={"Createfolder"}
-                    onClick={props.createFolder}
-                >
-                    <ListItemIcon>
+                <ListItem button key={"Createfolder"}>
+                    <ListItemIcon onClick={() => setDialogOpen(true)}>
                         <AddIcon />
                     </ListItemIcon>
-                    <ListItemText primary={"Create folder"} />
+                    <ListItemText
+                        primary={"Create folder"}
+                        onClick={() => setDialogOpen(true)}
+                    />
+                    <Dialog
+                        open={dialogOpen}
+                        onClose={() => setDialogOpen(false)}
+                        aria-labelledby="form-dialog-title"
+                    >
+                        <DialogTitle id="form-dialog-title">
+                            Create folder
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                To create new folder, please provide its name.
+                            </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                autoComplete="off"
+                                id="foldername"
+                                label="Enter folder name"
+                                type="foldername"
+                                value={textFieldValue}
+                                onChange={(e) =>
+                                    setTextFieldValue(e.target.value)
+                                }
+                                fullWidth
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                onClick={() => setDialogOpen(false)}
+                                color="primary"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    props.createFolder(textFieldValue);
+                                    setDialogOpen(false);
+                                }}
+                                color="primary"
+                                disabled={textFieldValue.length <= 0}
+                            >
+                                Create
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </ListItem>
             </List>
         </div>

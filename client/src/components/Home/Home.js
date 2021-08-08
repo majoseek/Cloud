@@ -36,8 +36,16 @@ function Home() {
     const navigate_home = () => {
         history.push("/login");
     };
-    const create_folder = () => {
-        //axios.post("/file/folder",{path:folderPath})
+    const create_folder = (folder_name) => {
+        axios.post(
+            "/file/folder",
+            { path: folderPath, name: folder_name },
+            {
+                headers: {
+                    Authorization: `Bearer ${cookies.token}`,
+                },
+            }
+        );
     };
     return (
         <React.Fragment>
