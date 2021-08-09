@@ -23,9 +23,15 @@ router.post("/upload", (req, res) => {
 
 router.post("/folder", authJWT, (req, res) => {
     if (req.user) {
-        const folder_path = req.body.path;
+        const folder_path = req.body.path.substring(15);
         const folder_name = req.body.name;
-        const dir = folder_path + "/" + folder_name;
+        const dir =
+            "./users_dirs/" +
+            req.user.login +
+            "/" +
+            folder_path +
+            "/" +
+            folder_name;
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
         }

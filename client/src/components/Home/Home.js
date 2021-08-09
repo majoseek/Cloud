@@ -25,7 +25,7 @@ function Home() {
                     setFolder(result.data["children"]);
                 })
                 .catch((err) => {
-                    history.push("/login");
+                    history.go(0);
                 });
         }
     }, [history, cookies]);
@@ -34,7 +34,7 @@ function Home() {
         history.push("/login");
     };
     const navigate_home = () => {
-        history.push("/login");
+        history.go(0);
     };
     const create_folder = (folder_name) => {
         axios
@@ -47,7 +47,7 @@ function Home() {
                     },
                 }
             )
-            .then(() => history.push("/login"))
+            .then(() => history.go(0))
             .catch((err) => console.log(err));
     };
     return (
