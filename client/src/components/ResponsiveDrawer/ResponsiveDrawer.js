@@ -72,8 +72,10 @@ function ResponsiveDrawer(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [textFieldValue, setTextFieldValue] = useState("");
+    const [FolderTextField, setFolderTextField] = useState("");
+    const [FolderDialogOpen, setFolderDialogOpen] = useState(false);
+    const [FileDialogOpen, setFileDialogOpen] = useState(false);
+    const [fileUpload, setFileUpload] = useState(null);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -98,22 +100,75 @@ function ResponsiveDrawer(props) {
             <Divider />
             <List>
                 <ListItem button key={"Uploadfile"}>
-                    <ListItemIcon>
+                    <ListItemIcon onClick={() => setFileDialogOpen(true)}>
                         <PublishIcon />
                     </ListItemIcon>
-                    <ListItemText primary={"Upload file"} />
+                    <ListItemText
+                        primary={"Upload file"}
+                        onClick={() => setFileDialogOpen(true)}
+                    />
+                    <Dialog
+                        open={FileDialogOpen}
+                        onClose={() => setFileDialogOpen(false)}
+                        aria-labelledby="form-dialog-title-file"
+                    >
+                        <DialogTitle id="form-dialog-title-file">
+                            Upload file
+                        </DialogTitle>
+                        <DialogContent
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flexDirection: "column",
+                            }}
+                        >
+                            <DialogContentText>
+                                We will upload below file to {props.folderName}{" "}
+                                folder
+                            </DialogContentText>
+                            <Button variant="contained" component="label">
+                                {fileUpload == null
+                                    ? "Choose file"
+                                    : fileUpload.name}
+                                <input
+                                    type="file"
+                                    hidden
+                                    onChange={(e) =>
+                                        setFileUpload(e.target.files[0])
+                                    }
+                                />
+                            </Button>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                onClick={() => setFileDialogOpen(false)}
+                                color="primary"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setFileDialogOpen(false);
+                                }}
+                                color="primary"
+                            >
+                                Upload
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </ListItem>
                 <ListItem button key={"Createfolder"}>
-                    <ListItemIcon onClick={() => setDialogOpen(true)}>
+                    <ListItemIcon onClick={() => setFolderDialogOpen(true)}>
                         <AddIcon />
                     </ListItemIcon>
                     <ListItemText
                         primary={"Create folder"}
-                        onClick={() => setDialogOpen(true)}
+                        onClick={() => setFolderDialogOpen(true)}
                     />
                     <Dialog
-                        open={dialogOpen}
-                        onClose={() => setDialogOpen(false)}
+                        open={FolderDialogOpen}
+                        onClose={() => setFolderDialogOpen(false)}
                         aria-labelledby="form-dialog-title"
                     >
                         <DialogTitle id="form-dialog-title">
@@ -130,27 +185,27 @@ function ResponsiveDrawer(props) {
                                 id="foldername"
                                 label="Enter folder name"
                                 type="foldername"
-                                value={textFieldValue}
+                                value={FolderTextField}
                                 onChange={(e) =>
-                                    setTextFieldValue(e.target.value)
+                                    setFolderTextField(e.target.value)
                                 }
                                 fullWidth
                             />
                         </DialogContent>
                         <DialogActions>
                             <Button
-                                onClick={() => setDialogOpen(false)}
+                                onClick={() => setFolderDialogOpen(false)}
                                 color="primary"
                             >
                                 Cancel
                             </Button>
                             <Button
                                 onClick={() => {
-                                    props.createFolder(textFieldValue);
-                                    setDialogOpen(false);
+                                    props.createFolder(FolderTextField);
+                                    setFolderDialogOpen(false);
                                 }}
                                 color="primary"
-                                disabled={textFieldValue.length <= 0}
+                                disabled={FolderTextField.length <= 0}
                             >
                                 Create
                             </Button>

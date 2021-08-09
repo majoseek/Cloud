@@ -37,15 +37,18 @@ function Home() {
         history.push("/login");
     };
     const create_folder = (folder_name) => {
-        axios.post(
-            "/file/folder",
-            { path: folderPath, name: folder_name },
-            {
-                headers: {
-                    Authorization: `Bearer ${cookies.token}`,
-                },
-            }
-        );
+        axios
+            .post(
+                "/file/folder",
+                { path: folderPath, name: folder_name },
+                {
+                    headers: {
+                        Authorization: `Bearer ${cookies.token}`,
+                    },
+                }
+            )
+            .then(() => history.push("/login"))
+            .catch((err) => console.log(err));
     };
     return (
         <React.Fragment>
