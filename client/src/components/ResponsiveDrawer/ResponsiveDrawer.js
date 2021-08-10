@@ -18,8 +18,6 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PublishIcon from "@material-ui/icons/Publish";
 import FileHolder from "../FileHolder/FileHolder";
 import AddIcon from "@material-ui/icons/Add";
-import axios from "axios";
-import { useHistory } from "react-router-dom";
 import {
     Button,
     Dialog,
@@ -70,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ResponsiveDrawer(props) {
-    const history = useHistory();
     const { window } = props;
     const classes = useStyles();
     const theme = useTheme();
@@ -79,18 +76,6 @@ function ResponsiveDrawer(props) {
     const [FolderDialogOpen, setFolderDialogOpen] = useState(false);
     const [FileDialogOpen, setFileDialogOpen] = useState(false);
     const [fileUpload, setFileUpload] = useState(null);
-    const upload_file = () => {
-        const fd = new FormData();
-        fd.append("file", fileUpload);
-        axios
-            .post("/file/upload", fd)
-            .then(() => {
-                history.go(0);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -165,7 +150,7 @@ function ResponsiveDrawer(props) {
                             <Button
                                 onClick={() => {
                                     setFileDialogOpen(false);
-                                    upload_file();
+                                    props.uploadFile(fileUpload);
                                 }}
                                 color="primary"
                             >

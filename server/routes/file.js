@@ -16,17 +16,23 @@ router.get("/", authJWT, (req, res) => {
 });
 
 //upload file to user's folder
-router.post("/upload", (req, res) => {
-    const uploadFile = req.files.file;
-    const fileName = uploadFile.name;
-    if (!uploadFile) res.status(401).send("No file specified");
-    uploadFile.mv(`${__dirname}/users_dirs/123/${fileName}`, function (err) {
-        if (err) {
-            console.log(err);
-            return res.status(500).send(err);
-        }
-        res.send("File added");
-    });
+router.post("/upload", authJWT, (req, res) => {
+    if (req.user) {
+        const uploadFile = req.files.file;
+        const fileName = uploadFile.name;
+        const filepath = req.body.filepath.substring(15);
+        if (!uploadFile) res.status(401).send("No file specified");
+        uploadFile.mv(
+            `${__dirname}/users_dirs/${req.user.login}/${filepath}/${fileName}`,
+            function (err) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send(err);
+                }
+                res.send("File added");
+            }
+        );
+    }
 });
 
 router.post("/folder", authJWT, (req, res) => {

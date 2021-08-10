@@ -50,6 +50,23 @@ function Home() {
             .then(() => history.go(0))
             .catch((err) => console.log(err));
     };
+    const upload_file = (file) => {
+        const fd = new FormData();
+        fd.append("file", file);
+        fd.append("filepath", folderPath);
+        axios
+            .post("/file/upload", fd, {
+                headers: {
+                    Authorization: `Bearer ${cookies.token}`,
+                },
+            })
+            .then(() => {
+                history.go(0);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     return (
         <React.Fragment>
             <ResponsiveDrawer
@@ -61,6 +78,7 @@ function Home() {
                 home={navigate_home}
                 createFolder={create_folder}
                 setFolderPath={setFolderPath}
+                uploadFile={upload_file}
             />
         </React.Fragment>
     );
