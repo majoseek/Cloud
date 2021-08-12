@@ -4,6 +4,7 @@ import authJWT from "../services/authentication.js";
 import dirTree from "directory-tree";
 import path from "path";
 import fs from "fs";
+import jwt from "jsonwebtoken";
 
 const __dirname = path.resolve();
 
@@ -18,58 +19,77 @@ router.get("/", authJWT, (req, res) => {
 //upload file to user's folder
 router.post("/upload", authJWT, (req, res) => {
     if (req.user) {
-        const uploadFile = req.files.file;
-        const fileName = uploadFile.name;
-        const filepath = req.body.filepath.substring(15);
-        if (!uploadFile) res.status(401).send("No file specified");
-        uploadFile.mv(
-            `${__dirname}/users_dirs/${req.user.login}/${filepath}/${fileName}`,
-            function (err) {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).send(err);
+        if (req.body.filepath != undefined) {
+            const uploadFile = req.files.file;
+            const fileName = uploadFile.name;
+            const filepath =
+                req.body.filepath == ""
+                    ? `users_dirs/${req.user.login}`
+                    : req.body.filepath;
+            if (!uploadFile) res.status(401).send("No file specified");
+            uploadFile.mv(
+                `${__dirname}/${filepath}/${fileName}`,
+                function (err) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send(err);
+                    }
+                    res.send("File added");
                 }
-                res.send("File added");
-            }
-        );
+            );
+        }
     }
 });
 
+//create new folder at given location
 router.post("/folder", authJWT, (req, res) => {
     if (req.user) {
-        const folder_path = req.body.path.substring(15);
-        const folder_name = req.body.name;
-        const dir =
-            "./users_dirs/" +
-            req.user.login +
-            "/" +
-            folder_path +
-            "/" +
-            folder_name;
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
+        if (req.body.path != undefined) {
+            const folder_path = req.body.path;
+            const folder_name = req.body.name;
+            const dir =
+                "./" +
+                (folder_path == ""
+                    ? `users_dirs/${req.user.login}/`
+                    : folder_path + "/") +
+                folder_name;
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+            res.status(200).send("Folder created successfully");
         }
-        res.status(200).send("Folder created successfully");
     }
 });
 
 //download given file
-router.post("/download", authJWT, (req, res) => {
-    if (req.user) {
-        const file_path = req.body.path;
-        if (file_path) {
-            if (file_path.length > req.user.login.length) {
+router.get("/download", (req, res) => {
+    jwt.verify(req.query.t, process.env.JWT_SECRET, (err, user) => {
+        if (req.query.path != undefined) {
+            const file_path = req.query.path;
+            if (file_path.length > user.login.length) {
                 //check if user downloads his own files
-                if (
-                    file_path.substring(
-                        "users_dirs/".length,
-                        req.user.login.length + "users_dirs/".length
-                    ) == req.user.login
-                ) {
-                    res.download(__dirname + "/" + file_path);
-                } else res.send("Authentication error");
-            } else res.send("Authentication error");
-        } else res.send("No file specified");
+                res.download(__dirname + "/" + file_path, (err) => {
+                    if (err) console.log(err);
+                });
+            }
+        }
+    });
+});
+
+//delete given file
+router.post("/delete", authJWT, (req, res) => {
+    if (req.user) {
+        if (req.body.path != undefined) {
+            const file_path = req.body.path;
+            console.log(file_path);
+            if (fs.existsSync(file_path)) {
+                fs.unlink(file_path, (err) => {
+                    if (err) res.status(401).send("This file doesnt exist");
+                    res.send("File deleted");
+                });
+            }
+        }
     }
 });
+
 export default router;

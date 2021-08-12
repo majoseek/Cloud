@@ -7,7 +7,12 @@ import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import path from "path";
 import "./FileHolder.css";
 import getFileExtension from "./service.js";
+import axios from "axios";
+import { useCookies } from "react-cookie";
+import { useHistory } from "react-router";
 export default function FileHolder(props) {
+    const history = useHistory();
+    const [cookies, setCookie] = useCookies(["token"]);
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -16,6 +21,24 @@ export default function FileHolder(props) {
     const [file_extension, setFileExtension] = useState(
         <InsertDriveFileIcon />
     );
+    const download_file = () => {
+        window.open(
+            `http://localhost:3001/file/download?path=${props.file.path}&t=${cookies.token}`
+        );
+    };
+    const delete_file = () => {
+        axios
+            .post(
+                "/file/delete",
+                { path: props.file.path },
+                {
+                    headers: {
+                        Authorization: `Bearer ${cookies.token}`,
+                    },
+                }
+            )
+            .then(() => history.go(0));
+    };
     useEffect(() => {
         const file_ext = path.extname(props.file.name);
         setFileExtension(getFileExtension(file_ext));
@@ -49,8 +72,12 @@ export default function FileHolder(props) {
                                         alignItems="stretch"
                                         flexDirection="column"
                                     >
-                                        <Button>Download</Button>
-                                        <Button>Delete</Button>
+                                        <Button onClick={() => download_file()}>
+                                            Download
+                                        </Button>
+                                        <Button onClick={() => delete_file()}>
+                                            Delete
+                                        </Button>
                                     </Box>
                                 </Paper>
                             </Fade>
